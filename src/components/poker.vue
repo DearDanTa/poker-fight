@@ -1,6 +1,7 @@
 <template>
   <div class="poker-main">
-    <el-card class="poker-base">
+    <h2 class="poker-logo">斗锤子地主</h2>
+    <el-card class="poker-base" v-loading="pokerLoading" :element-loading-text="pokerLoadingText">
       <el-steps :active="active" finish-status="success" simple style="margin-top: 20px">
         <el-step title="基本牌组"></el-step>
         <el-step title="洗牌"></el-step>
@@ -43,17 +44,32 @@
     <div class="left-player player-list">
       <div class="header">
         <h2>player1：地主</h2>
+        <p>豆子：4000万</p>
+      </div>
+      <div class="poker-view">
+        <p>牌数量：{{playerPokerList[0].pokerList.length}}</p>
+        <p v-if="playerPokerList[0].pokerList.length > 0">{{playerPokerList[0].pokerList}}</p>
       </div>
     </div>
     <div class="right-player player-list">
       <div class="header">
         <h2>player2：阿姨</h2>
+        <p>豆子：3990万</p>
+      </div>
+      <div class="poker-view">
+        <p>牌数量：{{playerPokerList[1].pokerList.length}}</p>
+        <p v-if="playerPokerList[1].pokerList.length > 0">{{playerPokerList[1].pokerList}}</p>
       </div>
     </div>
     <div class="bottom-player player-list">
       <div class="header">
         <h2>player3：卢本伟</h2>
-        <el-button @click="getCoffee">给阿姨倒一杯卡布奇诺</el-button>
+        <p>豆子：3700万</p>
+        <el-button @click="getCoffee">技能：给阿姨倒一杯卡布奇诺</el-button>
+      </div>
+      <div class="poker-view">
+        <p>牌数量：{{playerPokerList[2].pokerList.length}}</p>
+        <p v-if="playerPokerList[2].pokerList.length > 0">{{playerPokerList[2].pokerList}}</p>
       </div>
     </div>
   </div>
@@ -71,7 +87,23 @@
         mainPoker: mainData.mainAllPoker,
         active: 0,
         player: 3,
-        isBoss: false
+        isBoss: false,
+        pokerLoading: false,
+        pokerLoadingText: '',
+        playerPokerList: [
+          {
+            name: '地主',
+            pokerList: []
+          },
+          {
+            name: '阿姨',
+            pokerList: []
+          },
+          {
+            name: '卢本伟',
+            pokerList: []
+          }
+        ]
       }
     },
     methods: {
@@ -85,7 +117,34 @@
         this.active = active;
       },
       goPushPoker() {
-
+        this.playerPokerList.forEach(item => {
+          item.pokerList = [];
+        });
+        //开始发牌
+        this.pokerLoading = true;
+        const poker = JSON.parse(JSON.stringify(this.poker));
+        if (this.isBoss) {
+          console.log('123131')
+        } else {
+          //非boss发牌
+          for (let i = 0; i < poker.length; i++) {
+            setTimeout(() => {
+              if (i % 3 === 0) {
+                this.playerPokerList[0].pokerList.push(poker[i]);
+                this.pokerLoadingText = '正在发牌给：' + this.playerPokerList[0].name;
+              } else if (i % 3 === 1) {
+                this.playerPokerList[1].pokerList.push(poker[i]);
+                this.pokerLoadingText = '正在发牌给：' + this.playerPokerList[1].name;
+              } else if (i % 3 === 2) {
+                this.playerPokerList[2].pokerList.push(poker[i]);
+                this.pokerLoadingText = '正在发牌给：' + this.playerPokerList[2].name;
+              }
+              if (this.playerPokerList[2].pokerList.length >= 18) {
+                this.pokerLoading = false;
+              }
+            }, i * 200);
+          }
+        }
       },
       getCoffee() {
         this.$message.success('卢本伟给阿姨倒了一杯卡布奇诺')
@@ -99,6 +158,12 @@
     width: 100%;
     height: 100%;
     position: relative;
+
+    .poker-logo {
+      margin: 0;
+      padding-top: 10px;
+      text-align: center;
+    }
 
     .poker-base {
       width: 600px;
@@ -161,6 +226,11 @@
       position: absolute;
       left: 0;
       bottom: 0;
+      display: flex;
+
+      .poker-view {
+        margin-left: 30px;
+      }
     }
   }
 </style>
