@@ -4,7 +4,7 @@ import baseFunction from "../utils/common";
  */
 const allPokerType = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2'];
 //牌类大小
-const mainPokerSize = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2', 'SMALL JOKER', 'BIG JOKER'];
+const mainPokerSize = ['BIG JOKER', 'SMALL JOKER', '2', 'A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3'];
 /**
  * 牌组 54张
  *

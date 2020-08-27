@@ -128,6 +128,25 @@
         ]
       }
     },
+    watch: {
+      'playerPokerList': {
+        handler() {
+          let length = 0;
+          this.playerPokerList.forEach(item => {
+            length += item.pokerList.length
+          });
+          if (length === 54 && this.pokerLoading && !this.isOver) {
+            this.pokerLoadingText = '发牌完毕，整理各自手牌中。。。'
+            setTimeout(() => {
+              this.pokerLoading = false;
+              this.isOver = true;
+              this.autoRefresh();
+            }, 2000);
+          }
+        },
+        deep: true
+      }
+    },
     methods: {
       //洗牌
       shuffling() {
@@ -167,13 +186,27 @@
                   this.boss = this.playerPokerList[j].name;
                 }
               }
-              if (this.playerPokerList[j].pokerList.length >= 18) {
-                this.pokerLoading = false;
-                this.isOver = true;
+            }
+          }, i * 50);
+        }
+      },
+      autoRefresh() {
+        const pokerSize = mainData.mainPokerSize;
+        let copyPokerList;
+        let newPokerList = [];
+        this.playerPokerList.forEach(item => {
+          copyPokerList = JSON.parse(JSON.stringify(item.pokerList));
+          item.pokerList = [];
+          for (let i = 0; i < pokerSize.length; i++) {
+            for (let j = 0; j < copyPokerList.length; j++) {
+              if (copyPokerList[j].includes(pokerSize[i])) {
+                newPokerList.push(copyPokerList[j])
               }
             }
-          }, i * 100);
-        }
+          }
+          item.pokerList = Array.from(new Set(newPokerList));
+          newPokerList = [];
+        });
       },
       //重置牌局
       refresh() {
