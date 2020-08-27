@@ -3,6 +3,8 @@ import baseFunction from "../utils/common";
  * 基本牌类型
  */
 const allPokerType = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2'];
+//牌类大小
+const mainPokerSize = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2', 'SMALL JOKER', 'BIG JOKER'];
 /**
  * 牌组 54张
  *
@@ -63,4 +65,4 @@ for (let i = 0; i < mainPokerPackage.length; i++) {
 }
 mainAllPoker = baseFunction.flatten(mainAllPoker);
 
-export default {mainPokerPackage, mainAllPoker};
+export default {mainPokerPackage, mainAllPoker, mainPokerSize};
