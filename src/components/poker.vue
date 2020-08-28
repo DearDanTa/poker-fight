@@ -43,12 +43,13 @@
         </div>
       </div>
       <div class="poker-base-tips" v-if="isOver">
-        <p v-if="!isBoss">无地主局 人数：{{player}}</p>
-        <p v-if="isBoss">有地主局 人数：{{player}}</p>
-        <p>发牌完毕</p>
+        <p v-if="!isBoss">无地主局 人数：<span class="red-tips">{{player}}</span></p>
+        <p v-if="isBoss">有地主局 人数：<span class="red-tips">{{player}}</span></p>
+        <p>已发牌并整理完毕</p>
         <p v-if="isBoss">地主：<span class="red-tips">{{boss}}</span></p>
         <p v-if="isBoss">地主牌：<span class="red-tips">{{bossSinglePoker}}</span>，3张底牌：<span class="red-tips">{{bossPoker.toString().replace(/\,/g, '，')}}</span>
         </p>
+        <p class="help-tips">仅供学习算法，仅测试斗地主发牌随机炸弹的概率，无打牌用途</p>
         <el-button @click="refresh" type="primary">重置牌局</el-button>
       </div>
     </el-card>
@@ -79,6 +80,7 @@
         <h2>player3：卢本伟</h2>
         <p>豆子：3700万</p>
         <el-button @click="getCoffee">技能：给阿姨倒一杯卡布奇诺</el-button>
+        <el-button @click="getTomato">技能：扔番茄</el-button>
       </div>
       <div class="poker-view">
         <p>牌数量：{{playerPokerList[2].pokerList.length}}</p>
@@ -187,7 +189,7 @@
                 }
               }
             }
-          }, i * 50);
+          }, i * 80);
         }
       },
       autoRefresh() {
@@ -222,7 +224,10 @@
         this.active = 0;
       },
       getCoffee() {
-        this.$message.success('卢本伟给阿姨倒了一杯卡布奇诺')
+        this.$message.success('卢本伟给阿姨倒了一杯卡布奇诺');
+      },
+      getTomato() {
+        this.$message.success('卢本伟扔了个番茄');
       }
     }
   }
@@ -269,7 +274,7 @@
         }
       }
 
-      .red-tips {
+      .red-tips, .help-tips {
         color: #f56c6c;
       }
     }
